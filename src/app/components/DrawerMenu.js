@@ -12,11 +12,10 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import AppRouter from "../routes/index"
-import {Link} from "react-router-dom"
+import { Link } from "react-router-dom"
 const drawerWidth = 240;
 
-function ResponsiveDrawer(props) {
-  const { window } = props;
+function ResponsiveDrawer({ children, window }) {
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
   const handleDrawerToggle = () => {
@@ -28,25 +27,27 @@ function ResponsiveDrawer(props) {
       <Toolbar />
       <Divider />
       <List>
-          <Link to="/" style={{textDecoration:'inherit',color:'inherit'}}>
+        <Link to="/" style={{ textDecoration: 'inherit', color: 'inherit' }}>
           <ListItem button>
             <ListItemText primary={"Home"} />
           </ListItem>
-            </Link>
-          <Divider />
-          <Link to="/signup" style={{textDecoration:'inherit',color:'inherit'}}>
+        </Link>
+        <Divider />
+        <Link to="/signup" style={{ textDecoration: 'inherit', color: 'inherit' }}>
           <ListItem button>
             <ListItemText primary={"Login"} />
           </ListItem>
-          </Link>
-          <Divider />
+        </Link>
+        <Divider />
+        <Link to="/post" style={{ textDecoration: 'inherit', color: 'inherit' }}>
           <ListItem button>
-            <ListItemText primary={"Signup"} />
+            <ListItemText primary={"Post A Blog"} />
           </ListItem>
+        </Link>
 
       </List>
 
-   
+
     </div>
   );
 
@@ -73,7 +74,7 @@ function ResponsiveDrawer(props) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-           Practice
+            Practice
           </Typography>
         </Toolbar>
       </AppBar>
@@ -114,6 +115,7 @@ function ResponsiveDrawer(props) {
         sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}
       >
         <Toolbar />
+        {children}
       </Box>
     </Box>
   );

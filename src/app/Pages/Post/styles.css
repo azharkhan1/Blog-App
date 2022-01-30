@@ -1,0 +1,13 @@
+.main{
+    flex:1;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.blog-content {
+    margin:0 auto;
+    width: 80%;
+    padding: 10px;
+    word-break: break-all;
+    
+  }
