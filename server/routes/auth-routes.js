@@ -20,7 +20,7 @@ router.post('/signup', async (req, res) => {
         const user = await User.findOne({ email: req.body.email });
 
         if (user) {
-            return res.json({
+            return res.status(401).json({
                 message: "User already exists"
             });
         };
@@ -77,12 +77,12 @@ router.post('/login', async (req, res) => {
                     token
                 })
             } else {
-                return res.json({
+                return res.status(400).json({
                     message: 'Password not matched',
                 })
             }
         } else {
-            return res.json({
+            return res.status(404).json({
                 message: 'User not found',
             })
         }
@@ -92,9 +92,6 @@ router.post('/login', async (req, res) => {
             message: 'server error'
         })
     }
-
-
-
 })
 
 module.exports = router;

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useContext } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -13,11 +13,12 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import AppRouter from "../routes/index"
 import { Link } from "react-router-dom"
+import GlobalContext from '../context/GlobalContext';
 const drawerWidth = 240;
 
 function ResponsiveDrawer({ children, window }) {
   const [mobileOpen, setMobileOpen] = React.useState(false);
-
+  const { user } = useContext(GlobalContext)
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
@@ -29,21 +30,22 @@ function ResponsiveDrawer({ children, window }) {
       <List>
         <Link to="/" style={{ textDecoration: 'inherit', color: 'inherit' }}>
           <ListItem button>
-            <ListItemText primary={"Home"} />
+            <ListItemText primary={"Sigin"} />
           </ListItem>
         </Link>
         <Divider />
         <Link to="/signup" style={{ textDecoration: 'inherit', color: 'inherit' }}>
           <ListItem button>
-            <ListItemText primary={"Login"} />
+            <ListItemText primary={"Signup"} />
           </ListItem>
         </Link>
         <Divider />
-        <Link to="/post" style={{ textDecoration: 'inherit', color: 'inherit' }}>
+        {user && <Link to="/post" style={{ textDecoration: 'inherit', color: 'inherit' }}>
           <ListItem button>
             <ListItemText primary={"Post A Blog"} />
           </ListItem>
         </Link>
+        }
 
       </List>
 

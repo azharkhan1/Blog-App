@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
 const PORT = process.env.PORT || 5000;
-const { User, Blog } = require('./model');
+const { User } = require('./model');
 const authRoutes = require('./routes/auth-routes');
 const cookieParser = require('cookie-parser');
 const jwt = require('jsonwebtoken');
@@ -12,11 +12,16 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 app.use(morgan("dev"));
-app.use(cors());
+app.use(cors({
+    origin: ["http://localhost:3000"],
+    credentials: true,
+}));
 
 
 
 app.use("/auth", authRoutes);
+
+
 
 
 app.use((req, res, next) => {
@@ -26,7 +31,6 @@ app.use((req, res, next) => {
     }
     jwt.verify(req.cookies.jToken, "123456", function (err, decodedData) {
         if (!err) {
-            console.log('deocded', decodedData)
             var token = jwt.sign({
                 id: decodedData.id,
                 name: decodedData.name,
@@ -49,6 +53,7 @@ app.use((req, res, next) => {
 })
 
 
+
 app.get('/profile', async (req, res) => {
     // Fine User who is logged in.
     try {
@@ -58,7 +63,7 @@ app.get('/profile', async (req, res) => {
                 user,
             })
         } else {
-            res.json({
+            res.status(500).json({
                 message: 'server error'
             })
         }
@@ -72,52 +77,17 @@ app.get('/profile', async (req, res) => {
 })
 
 
-app.post("/post-blog", async (req, res) => {
-    if (req.body.jToken.role !== "admin") {
-        return res.json({
-            message: "only admin can post blog"
-        })
-    }
-    if (!req.body.description) {
-        return res.json({
-            message: "please send blog description"
-        })
-    }
-    try {
-        const blog = new Blog({
-            description: req.body.description,
-            user: req.body.jToken.id
-        });
-        blog.save();
-
-        res.json({
-            message: "blog created successfully",
-            blog,
-        })
-    } catch (err) {
-        res.json({
-            message: 'server error'
-        })
-    }
-
-
-})
 
 
 
-app.get('/blogs/:page', async (req, res) => {
-    try {
-        const blogs = await Blog.find({}).skip(req.params.page * 10)
-            .limit(10);;
-        res.json({
-            blogs,
-            message: 'blogs fetched successfully'
-        })
-    } catch (err) {
-        res.json({
-            message: "some error", err
-        })
-    }
+
+
+app.get('/logout', (req, res) => {
+    res.clearCookie("jToken");
+
+    return res.json({
+        message: "logout successfully",
+    })
 })
 
 
